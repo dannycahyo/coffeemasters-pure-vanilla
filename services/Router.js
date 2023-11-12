@@ -3,8 +3,8 @@ export const Router = {
     document.querySelectorAll("a.navlink").forEach((a) => {
       a.addEventListener("click", (event) => {
         event.preventDefault();
-        const href = event.target.getAttribute("href");
-        Router.go(href);
+        const url = event.target.getAttribute("href");
+        Router.go(url);
       });
     });
 
@@ -19,30 +19,29 @@ export const Router = {
       history.pushState({ route }, "", route);
     }
     let pageElement = null;
+
     switch (route) {
       case "/":
-        pageElement = document.createElement("h1");
-        pageElement.textContent = "Menu";
+        pageElement = document.createElement("menu-page");
         break;
       case "/order":
-        pageElement = document.createElement("h1");
-        pageElement.textContent = "Order";
+        pageElement = document.createElement("order-page");
         break;
       default:
         if (route.startsWith("/product-")) {
-          pageElement = document.createElement("h1");
-          pageElement.textContent = "Details";
-          pageElement.dataset.productId = route.substring(
-            route.lastIndexOf("-") + 1,
-          );
+          pageElement = document.createElement("details-page");
+          const paramId = route.substring(route.lastIndexOf("-") + 1);
+          pageElement.dataset.productId = paramId;
         }
-        break;
     }
     if (pageElement) {
-      document.querySelector("main").innerHTML = "";
-      document.querySelector("main").appendChild(pageElement);
+      const cache = document.querySelector("main");
+      cache.innerHTML = "";
+      cache.appendChild(pageElement);
+      window.scrollX = 0;
+      window.scrollY = 0;
+    } else {
+      document.querySelector("main").innerHTML = "Oups, 404!";
     }
-
-    window.scrollX = 0;
   },
 };
