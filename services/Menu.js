@@ -1,4 +1,4 @@
-import { API } from "./API";
+import { API } from "./API.js";
 
 export async function loadMenuData() {
   const data = await API.fetchMenu();
